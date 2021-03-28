@@ -1,0 +1,26 @@
+Install eslint as a dev dependency:
+Font: https://medium.com/how-to-react/config-eslint-and-prettier-in-visual-studio-code-for-react-js-development-97bb2236b31a
+npm install eslint --save-dev
+
+Generate .eslintrc.json file
+npx eslint --init
+Select To check syntax and find problems
+Select JavaScript modules (import/export) 
+Select React Now it will ask Does your project use TypeScript No/Yes 
+Now select Browser and then JSON option. It will then prompt you to install eslint-plugin-react so click on yes.
+
+Add this line "react/react-in-jsx-scope": "off" inside the rules.
+Add "jest": true inside env.
+
+Install the required plugins for the prettier setup:
+npm install eslint-config-prettier eslint-plugin-prettier prettier --save-dev
+Add this line "plugin:prettier/recommended" inside extends.
+
+Install antd:
+Font: https://ant.design/docs/react/use-with-create-react-app
+npm install --save antd@4.13.0
+
+Install unfetch:
+Font: https://github.com/developit/unfetch
+npm i -S unfetch@4.2.0
+
