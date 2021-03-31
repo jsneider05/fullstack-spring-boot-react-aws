@@ -1,29 +1,77 @@
 import { useState, useEffect } from "react";
-import { getAllStudents } from "./client";
-import { Layout, Menu, Breadcrumb } from "antd";
+import { getAllUsers } from "./client";
+import { Layout, Menu, Breadcrumb, Table, Spin, Empty } from "antd";
 import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import "./App.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-function App() {
-  const [students, setStudents] = useState([]);
-  const [collapsed, setCollapsed] = useState(false);
+const columns = [
+  {
+    title: "Id",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "Email",
+    dataIndex: "email",
+    key: "email",
+  },
+  {
+    title: "Gender",
+    dataIndex: "gender",
+    key: "gender",
+  },
+];
 
-  const fetchStudents = () =>
-    getAllStudents()
+function App() {
+  const [users, setUsers] = useState([]);
+  const [collapsed, setCollapsed] = useState(false);
+  const [fetching, setFetching] = useState(true);
+
+  const fetchUsers = () =>
+    getAllUsers()
       .then((res) => res.json())
-      .then((data) => setStudents(data));
+      .then((data) => {
+        console.log(data);
+        setUsers(data);
+        setFetching(false);
+      });
 
   useEffect(() => {
     console.log("component is mounted");
-    fetchStudents();
+    fetchUsers();
   }, []);
 
-  if (students.length <= 0) {
-    return "no data";
-  }
+  const renderUsers = () => {
+    if (fetching) {
+      return (
+        <div className="spin">
+          <Spin size="large" />
+        </div>
+      );
+    }
+    if (users.length <= 0) {
+      return <Empty />;
+    }
+    return (
+      <Table
+        dataSource={users}
+        columns={columns}
+        bordered
+        title={() => "Users"}
+        pagination={{ pageSize: 50 }}
+        scroll={{ y: 240 }}
+        rowKey={(user) => user.id}
+      />
+    );
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -58,10 +106,10 @@ function App() {
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
           <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-            Bill is a cat.
+            {renderUsers()}
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: "center" }}>By JoanS ©2021</Footer>
       </Layout>
     </Layout>
   );
