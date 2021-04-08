@@ -24,3 +24,5 @@ Install unfetch:
 Font: https://github.com/developit/unfetch
 npm i -S unfetch@4.2.0
 
+-eslint-config-prettier
+
