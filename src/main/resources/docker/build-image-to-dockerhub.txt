@@ -1,0 +1,32 @@
+Docker authentication
+- docker login
+- docker login --username:jsneider05
+
+Build docker image and push it to DockerHub
+Mac
+- ./mvnw clean install -U jib:build -Djib.to.image=jsneider05/spring-react-fullstack:v1
+- ./mvnw clean install -U jib:build -Djib.to.image=jsneider05/spring-react-fullstack:latest -Djib.to.auth.username=jsneider05 -Djib.to.auth.password=yourpassword
+
+Windows Command Prompt
+- mvnw clean install -U jib:build -Djib.to.image=jsneider05/spring-react-fullstack:v1
+- mvnw clean install -U jib:build -Djib.to.image=jsneider05/spring-react-fullstack:latest -Djib.to.auth.username=jsneider05 -Djib.to.auth.password=yourpassword
+
+
+Windows Powershell Terminal
+- ./mvnw clean install -U jib:build '-Djib.to.image=jsneider05/spring-react-fullstack:v1'
+- ./mvnw clean install -U jib:build '-Djib.to.image=jsneider05/spring-react-fullstack:latest' '-Djib.to.auth.username=jsneider05' '-Djib.to.auth.password=yourpassword'
+
+Pull image from DockerHub
+- docker pull jsneider05/spring-react-fullstack
+
+To run container
+- docker run --name fullstack -p 8086:8080 jsneider05/spring-react-fullstack
+
+To delete container with name fullstack
+- docker rm -f fullstack
+
+To view local images run
+- docker image ls
+
+To view running containers
+- docker ps

@@ -1,0 +1,15 @@
+Show active profiles
+- ./mvnw help:active-profiles
+
+Build and push docker image to Dockerhub and local using a maven profile
+Mac
+- ./mvnw clean install -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=1
+- ./mvnw clean install -P build-frontend -P jib-push-to-local -Dapp.image.tag=latest
+
+Windows Command Prompt
+- mvnw clean install -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=1
+- mvnw clean install -P build-frontend -P jib-push-to-local -Dapp.image.tag=latest
+
+Windows Powershell Terminal
+- ./mvnw clean install -P build-frontend -P jib-push-to-dockerhub '-Dapp.image.tag=1'
+- ./mvnw clean install -P build-frontend -P jib-push-to-local '-Dapp.image.tag=latest'

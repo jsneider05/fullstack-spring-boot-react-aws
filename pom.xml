@@ -21,6 +21,10 @@
     <project.file.name>fullstack-application</project.file.name>
     <bootstrapClass>com.fullstack.Application</bootstrapClass>
     <maven.test.skip>false</maven.test.skip>
+    <jib-maven-plugin.version>2.5.2</jib-maven-plugin.version>
+    <app.image.repository>jsneider05</app.image.repository>
+    <app.image.name>springboot-react-fullstack</app.image.name>
+    <app.image.tag/>
   </properties>
 
   <dependencies>
@@ -81,7 +85,7 @@
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>jib-maven-plugin</artifactId>
-        <version>2.5.2</version>
+        <version>${jib-maven-plugin.version}</version>
         <configuration>
           <from>
             <image>openjdk:${java.version}</image>
@@ -99,6 +103,113 @@
   </build>
 
   <profiles>
+
+    <profile>
+      <id>jib-push-to-dockerhub</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-maven-plugin</artifactId>
+            <version>${jib-maven-plugin.version}</version>
+            <configuration>
+              <from>
+                <image>openjdk:${java.version}</image>
+              </from>
+              <container>
+                <ports>
+                  <port>8080</port>
+                </ports>
+                <format>OCI</format>
+              </container>
+            </configuration>
+            <executions>
+              <execution>
+                <id>push-custom-tag</id>
+                <phase>package</phase>
+                <configuration>
+                  <to>
+                    <image>docker.io/${app.image.repository}/${app.image.name}:${app.image.tag}</image>
+                  </to>
+                </configuration>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>push-latest-tag</id>
+                <phase>package</phase>
+                <configuration>
+                  <to>
+                    <image>docker.io/${app.image.repository}/${app.image.name}:latest</image>
+                  </to>
+                </configuration>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>jib-push-to-dockerd</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.google.cloud.tools</groupId>
+            <artifactId>jib-maven-plugin</artifactId>
+            <version>${jib-maven-plugin.version}</version>
+            <configuration>
+              <from>
+                <image>openjdk:${java.version}</image>
+              </from>
+              <container>
+                <ports>
+                  <port>8080</port>
+                </ports>
+                <format>OCI</format>
+              </container>
+            </configuration>
+            <executions>
+              <execution>
+                <id>push-custom-tag</id>
+                <phase>package</phase>
+                <configuration>
+                  <to>
+                    <image>${app.image.repository}/${app.image.name}:${app.image.tag}</image>
+                  </to>
+                </configuration>
+                <goals>
+                  <goal>dockerBuild</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>push-latest-tag</id>
+                <phase>package</phase>
+                <configuration>
+                  <to>
+                    <image>${app.image.repository}/${app.image.name}:latest</image>
+                  </to>
+                </configuration>
+                <goals>
+                  <goal>dockerBuild</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <profile>
       <id>build-frontend</id>
       <activation>
