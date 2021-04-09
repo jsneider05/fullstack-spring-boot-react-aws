@@ -5,6 +5,6 @@ spring:
     active: dev
 
 server:
-  port: 8086
+  port: 8080
 #  servlet:
 #    context-path: /api

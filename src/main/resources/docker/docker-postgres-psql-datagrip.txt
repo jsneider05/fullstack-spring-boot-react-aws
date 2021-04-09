@@ -1,0 +1,53 @@
+Docker Postgres (Networks, Volumes), Docker PSQL and DataGrip
+
+Create docker Network:
+docker network create db
+
+Delete docker Network:
+docker network rm db
+
+Create directory for saving the data:
+mkdir db-data
+cd db-data
+
+Run postres container:
+In Mac OS:
+$PWD point to the actual directory
+docker run -d --name db -p 5434:5432 --network=db -v "$PWD:/var/lib/postgresql/data" -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres postgres:alpine
+
+In WSL:
+docker run -d --name db -p 5434:5432 --network=db -v db-data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres postgres:alpine
+
+This create a volume named db-data, and this is in the path for WSL: \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
+In Command Prompt we can verify the paths for WSL: wsl -l -v
+
+We can use psql to connect to postgres container through the network, create psql container:
+Reference: https://docs.docker.com/engine/reference/commandline/run/
+-it -> interactive bash shell in the container
+--rm -> Automatically remove the container when it exits
+--network -> Connect a container to a network
+--hostname , -h -> Container host name, in this case the postgres container name db
+
+docker run -it --rm --network=db postgres:alpine psql -h db -U postgres
+
+Create database:
+create database student;
+
+List databases:
+\l
+
+Connect to student database:
+\c student
+
+Create table:
+create table student(id BIGSERIAL PRIMARY KEY, name TEXT);
+
+Show tables:
+\dt
+
+Describe table:
+\d student
+
+Show sequences:
+select * from pg_sequences;
+
