@@ -15,11 +15,20 @@ In Mac OS:
 $PWD point to the actual directory
 docker run -d --name db -p 5434:5432 --network=db -v "$PWD:/var/lib/postgresql/data" -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres postgres:alpine
 
+In Windows Command Prompt
+docker run -d --name db -p 5434:5432 --network=db -v "%cd%:/var/lib/postgresql/data" -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres postgres:alpine
+
+In Windows Powershell Terminal
+docker run -d --name db -p 5434:5432 --network=db -v ${PWD}:/var/lib/postgresql/data -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres postgres:alpine
+
 In WSL:
 docker run -d --name db -p 5434:5432 --network=db -v db-data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres postgres:alpine
 
 This create a volume named db-data, and this is in the path for WSL: \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
 In Command Prompt we can verify the paths for WSL: wsl -l -v
+
+Or if we want create the postgres container with the database student add:
+-e POSTGRES_DB=student
 
 We can use psql to connect to postgres container through the network, create psql container:
 Reference: https://docs.docker.com/engine/reference/commandline/run/
