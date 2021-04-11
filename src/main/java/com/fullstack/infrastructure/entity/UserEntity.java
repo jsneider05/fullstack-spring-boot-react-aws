@@ -42,5 +42,5 @@ public class UserEntity {
     this.email = email;
     this.gender = gender;
   }
-  
+
 }
