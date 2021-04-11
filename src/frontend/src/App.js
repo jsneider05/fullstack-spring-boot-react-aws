@@ -66,7 +66,6 @@ function App() {
         columns={columns}
         bordered
         title={() => "Users"}
-        pagination={{ pageSize: 50 }}
         scroll={{ y: 240 }}
         rowKey={(user) => user.id}
       />
