@@ -27,8 +27,8 @@ docker run -d --name db -p 5434:5432 --network=db -v db-data:/var/lib/postgresql
 This create a volume named db-data, and this is in the path for WSL: \\wsl$\docker-desktop-data\version-pack-data\community\docker\volumes
 In Command Prompt we can verify the paths for WSL: wsl -l -v
 
-Or if we want create the postgres container with the database student add:
--e POSTGRES_DB=student
+Or if we want create the postgres container with the database fullstack add:
+-e POSTGRES_DB=fullstack
 
 We can use psql to connect to postgres container through the network, create psql container:
 Reference: https://docs.docker.com/engine/reference/commandline/run/
@@ -40,22 +40,22 @@ Reference: https://docs.docker.com/engine/reference/commandline/run/
 docker run -it --rm --network=db postgres:alpine psql -h db -U postgres
 
 Create database:
-create database student;
+create database fullstack;
 
 List databases:
 \l
 
-Connect to student database:
-\c student
+Connect to fullstack database:
+\c fullstack
 
 Create table:
-create table student(id BIGSERIAL PRIMARY KEY, name TEXT);
+create table fullstack(id BIGSERIAL PRIMARY KEY, name TEXT);
 
 Show tables:
 \dt
 
 Describe table:
-\d student
+\d fullstack
 
 Show sequences:
 select * from pg_sequences;
