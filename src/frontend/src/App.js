@@ -1,36 +1,15 @@
 import { useState, useEffect } from "react";
 import { getAllUsers } from "./client";
-import { Layout, Menu, Breadcrumb, Table, Spin, Empty } from "antd";
+import { Layout, Menu, Breadcrumb, Empty } from "antd";
 import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import "./App.css";
+import SpinFetching from "./components/SpinFetching.js";
+import TableUser from "./components/TableUser.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-const columns = [
-  {
-    title: "Id",
-    dataIndex: "id",
-    key: "id",
-  },
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
-  },
-  {
-    title: "Gender",
-    dataIndex: "gender",
-    key: "gender",
-  },
-];
-
-function App() {
+const App = () => {
   const [users, setUsers] = useState([]);
   const [collapsed, setCollapsed] = useState(false);
   const [fetching, setFetching] = useState(true);
@@ -39,37 +18,22 @@ function App() {
     getAllUsers()
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setUsers(data);
         setFetching(false);
       });
 
   useEffect(() => {
-    console.log("component is mounted");
     fetchUsers();
   }, []);
 
   const renderUsers = () => {
     if (fetching) {
-      return (
-        <div className="spin">
-          <Spin size="large" />
-        </div>
-      );
+      return <SpinFetching />;
     }
     if (users.length <= 0) {
       return <Empty />;
     }
-    return (
-      <Table
-        dataSource={users}
-        columns={columns}
-        bordered
-        title={() => "Users"}
-        scroll={{ y: 240 }}
-        rowKey={(user) => user.id}
-      />
-    );
+    return <TableUser users={users} />;
   };
 
   return (
@@ -112,6 +76,6 @@ function App() {
       </Layout>
     </Layout>
   );
-}
+};
 
 export default App;

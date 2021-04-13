@@ -20,6 +20,7 @@
   "rules": {
     "react/react-in-jsx-scope": "off",
     "no-unused-vars": "warn",
-    "no-console": "warn"
+    "no-console": "warn",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }]
   }
 }
