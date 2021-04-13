@@ -22,4 +22,10 @@ public final class UserMapper {
           .map(this.toUser)
           .collect(Collectors.toList());
 
+  public final Function<User, UserEntity> toUserEntity = user ->
+      new UserEntity(
+          user.getName(),
+          user.getEmail(),
+          user.getGender());
+
 }
