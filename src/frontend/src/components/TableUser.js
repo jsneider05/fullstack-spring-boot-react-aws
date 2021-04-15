@@ -1,5 +1,6 @@
-import PropTypes from "prop-types";
+import { useContext } from "react";
 import { Table } from "antd";
+import { UserContext } from "../hooks/userContext";
 
 const columns = [
   {
@@ -24,7 +25,8 @@ const columns = [
   },
 ];
 
-const TableUser = ({ users }) => {
+const TableUser = () => {
+  const users = useContext(UserContext);
   return (
     <Table
       dataSource={users}
@@ -35,10 +37,6 @@ const TableUser = ({ users }) => {
       rowKey={(user) => user.id}
     />
   );
-};
-
-TableUser.propTypes = {
-  users: PropTypes.array.isRequired,
 };
 
 export default TableUser;
