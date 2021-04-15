@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Table } from "antd";
-import { UserContext } from "../hooks/userContext";
+import UserContext from "../hooks/userContext";
 
 const columns = [
   {

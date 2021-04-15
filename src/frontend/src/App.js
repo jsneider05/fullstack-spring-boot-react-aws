@@ -5,7 +5,7 @@ import "./App.css";
 import SpinFetching from "./components/SpinFetching.js";
 import TableUser from "./components/TableUser.js";
 import useFetchUsers from "./hooks/useFetchUsers.js";
-import { UserContext } from "./hooks/userContext";
+import { UserProvider } from "./hooks/userContext";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -25,7 +25,7 @@ const App = () => {
   };
 
   return (
-    <UserContext.Provider value={users}>
+    <UserProvider value={users}>
       <Layout style={{ minHeight: "100vh" }}>
         <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
           <div className="logo" />
@@ -64,7 +64,7 @@ const App = () => {
           <Footer style={{ textAlign: "center" }}>By JoanS ©2021</Footer>
         </Layout>
       </Layout>
-    </UserContext.Provider>
+    </UserProvider>
   );
 };
 
