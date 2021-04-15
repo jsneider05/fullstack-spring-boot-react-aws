@@ -1,30 +1,17 @@
-import { useState, useEffect } from "react";
-import { getAllUsers } from "./client";
+import { useState } from "react";
 import { Layout, Menu, Breadcrumb, Empty } from "antd";
 import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import "./App.css";
 import SpinFetching from "./components/SpinFetching.js";
 import TableUser from "./components/TableUser.js";
+import useFetchUsers from "./hooks/useFetchUsers.js";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 const App = () => {
-  const [users, setUsers] = useState([]);
   const [collapsed, setCollapsed] = useState(false);
-  const [fetching, setFetching] = useState(true);
-
-  const fetchUsers = () =>
-    getAllUsers()
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data);
-        setFetching(false);
-      });
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  const [users, fetching] = useFetchUsers();
 
   const renderUsers = () => {
     if (fetching) {
