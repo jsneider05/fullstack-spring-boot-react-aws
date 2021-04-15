@@ -22,7 +22,11 @@ npm install --save antd@4.13.0
 
 Install unfetch:
 Font: https://github.com/developit/unfetch
+-S or --save for adds the npm package to dependencies project
 npm i -S unfetch@4.2.0
+
+Install axios
+npm i -S axios
 
 -eslint-config-prettier
 

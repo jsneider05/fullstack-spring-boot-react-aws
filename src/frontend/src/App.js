@@ -4,6 +4,8 @@ import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutl
 import "./App.css";
 import SpinFetching from "./components/SpinFetching.js";
 import TableUser from "./components/TableUser.js";
+import UserDraweForm from "./components/UserDraweForm.js";
+import ResultError from "./components/ResultError";
 import useFetchUsers from "./hooks/useFetchUsers.js";
 import { UserProvider } from "./hooks/userContext";
 
@@ -12,16 +14,25 @@ const { SubMenu } = Menu;
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [users, fetching] = useFetchUsers();
+  const [users, fetching, [statusError, statusTextError]] = useFetchUsers();
+  const [showDrawer, setShowDrawer] = useState(false);
 
   const renderUsers = () => {
+    if (statusError) {
+      return <ResultError status={statusError} title={statusError} subTitle={statusTextError} />;
+    }
     if (fetching) {
       return <SpinFetching />;
     }
     if (users.length <= 0) {
       return <Empty />;
     }
-    return <TableUser />;
+    return (
+      <>
+        <UserDraweForm showDrawer={showDrawer} setShowDrawer={setShowDrawer} />
+        <TableUser buttonUserOnClick={() => setShowDrawer(!showDrawer)} />;
+      </>
+    );
   };
 
   return (
