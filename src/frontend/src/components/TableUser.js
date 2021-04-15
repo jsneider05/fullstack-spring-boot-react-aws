@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Table } from "antd";
+import ButtonUser from "./ButtonUser.js";
 import UserContext from "../hooks/userContext";
 
 const columns = [
@@ -32,7 +33,7 @@ const TableUser = () => {
       dataSource={users}
       columns={columns}
       bordered
-      title={() => "Users"}
+      title={() => <ButtonUser />}
       scroll={{ y: 240 }}
       rowKey={(user) => user.id}
     />
