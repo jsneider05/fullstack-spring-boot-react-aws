@@ -1,6 +1,6 @@
 import { Spin } from "antd";
 
-const SpinFetching = () => {
+const SpinLoading = () => {
   return (
     <div className="spin">
       <Spin size="large" />
@@ -8,4 +8,4 @@ const SpinFetching = () => {
   );
 };
 
-export default SpinFetching;
+export default SpinLoading;

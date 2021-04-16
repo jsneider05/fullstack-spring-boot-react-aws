@@ -1,18 +1,35 @@
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { Drawer, Input, Col, Select, Form, Row, Button } from "antd";
+import UserRepository from "../services/user.repository";
+import SpinLoading from "./SpinLoading";
 
 const { Option } = Select;
 
-const UserDrawerForm = ({ showDrawer, setShowDrawer }) => {
+const UserDrawerForm = (props) => {
+  const { showDrawer, setShowDrawer, fetchUsers } = props;
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const addUser = async (user) => {
+    setSubmitting(true);
+    await UserRepository.addUser(user)
+      .then(() => fetchUsers())
+      .catch(({ response }) => {
+        const messageObj = { statusError: response.status, statusTextError: response.statusText };
+        alert(JSON.stringify(messageObj, null, 2));
+      })
+      .finally(() => {
+        setSubmitting(false);
+        onCLose();
+      });
+  };
+
   const onCLose = () => setShowDrawer(false);
 
-  const onFinish = (values) => {
-    alert(JSON.stringify(values, null, 2));
-  };
+  const onFinish = async (user) => await addUser(user);
 
-  const onFinishFailed = (errorInfo) => {
-    alert(JSON.stringify(errorInfo, null, 2));
-  };
+  const onFinishFailed = (errorInfo) => alert(JSON.stringify(errorInfo, null, 2));
 
   return (
     <Drawer
@@ -66,6 +83,7 @@ const UserDrawerForm = ({ showDrawer, setShowDrawer }) => {
             </Form.Item>
           </Col>
         </Row>
+        <Row>{submitting && <SpinLoading />}</Row>
       </Form>
     </Drawer>
   );
@@ -74,6 +92,7 @@ const UserDrawerForm = ({ showDrawer, setShowDrawer }) => {
 UserDrawerForm.propTypes = {
   showDrawer: PropTypes.bool.isRequired,
   setShowDrawer: PropTypes.func.isRequired,
+  fetchUsers: PropTypes.func.isRequired,
 };
 
 export default UserDrawerForm;

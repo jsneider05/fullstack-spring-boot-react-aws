@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Layout, Menu, Breadcrumb, Empty } from "antd";
 import { DesktopOutlined, PieChartOutlined, FileOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import "./App.css";
-import SpinFetching from "./components/SpinFetching.js";
+import SpinLoading from "./components/SpinLoading.js";
 import TableUser from "./components/TableUser.js";
 import UserDraweForm from "./components/UserDraweForm.js";
 import ResultError from "./components/ResultError";
@@ -14,22 +14,24 @@ const { SubMenu } = Menu;
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [users, fetching, [statusError, statusTextError]] = useFetchUsers();
+  const { users, loading, error, fetchUsers } = useFetchUsers();
   const [showDrawer, setShowDrawer] = useState(false);
+
+  const [statusError, statusTextError] = error;
 
   const renderUsers = () => {
     if (statusError) {
       return <ResultError status={statusError} title={statusError} subTitle={statusTextError} />;
     }
-    if (fetching) {
-      return <SpinFetching />;
+    if (loading) {
+      return <SpinLoading />;
     }
     if (users.length <= 0) {
       return <Empty />;
     }
     return (
       <>
-        <UserDraweForm showDrawer={showDrawer} setShowDrawer={setShowDrawer} />
+        <UserDraweForm showDrawer={showDrawer} setShowDrawer={setShowDrawer} fetchUsers={fetchUsers} />
         <TableUser buttonUserOnClick={() => setShowDrawer(!showDrawer)} />;
       </>
     );
