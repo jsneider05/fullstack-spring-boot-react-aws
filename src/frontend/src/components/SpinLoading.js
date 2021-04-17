@@ -1,4 +1,5 @@
 import { Spin } from "antd";
+import "./SpinLoading.css";
 
 const SpinLoading = () => {
   return (
