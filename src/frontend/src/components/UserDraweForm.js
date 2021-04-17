@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Drawer, Input, Col, Select, Form, Row, Button } from "antd";
 import UserRepository from "../services/user.repository";
 import SpinLoading from "./SpinLoading";
+import { successNotification, errorNotification } from "./Notification";
 
 const { Option } = Select;
 
@@ -14,7 +15,10 @@ const UserDrawerForm = (props) => {
   const addUser = async (user) => {
     setSubmitting(true);
     await UserRepository.addUser(user)
-      .then(() => fetchUsers())
+      .then(() => {
+        successNotification("User added successfully", `${user.name} was added to the system`);
+        fetchUsers();
+      })
       .catch(({ response }) => {
         const messageObj = { statusError: response.status, statusTextError: response.statusText };
         alert(JSON.stringify(messageObj, null, 2));
