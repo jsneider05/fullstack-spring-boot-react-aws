@@ -6,4 +6,6 @@ public interface UserRepository {
 
   void save(User user);
 
+  void delete(Long id);
+
 }

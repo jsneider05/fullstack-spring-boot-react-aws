@@ -22,4 +22,9 @@ public class UserPostgresDao implements UserDao {
     );
   }
 
+  @Override
+  public Boolean existsById(Long id) {
+    return this.repository.existsById(id);
+  }
+
 }

@@ -20,4 +20,9 @@ public class UserPostgresRepository implements UserRepository {
         this.mapper.toUserEntity.apply(user)
     );
   }
+
+  @Override
+  public void delete(Long id) {
+    this.repository.deleteById(id);
+  }
 }

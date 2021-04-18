@@ -7,4 +7,6 @@ public interface UserDao {
 
   List<User> getAll();
 
+  Boolean existsById(Long id);
+
 }

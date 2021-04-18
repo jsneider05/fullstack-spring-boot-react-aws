@@ -1,14 +1,41 @@
 import { useContext } from "react";
 import PropTypes from "prop-types";
-import { Badge, Table, Tag } from "antd";
+import { Badge, Popconfirm, Radio, Table, Tag } from "antd";
 import ButtonUser from "./ButtonUser";
 import AvatarUser from "./AvatarUser";
 import UserContext from "../hooks/userContext";
+import UserRepository from "../services/user.repository";
+import { successNotification } from "./Notification";
 import "./TableUser.css";
 
 const renderAvatar = (text, user) => <AvatarUser name={user.name} />;
 
-const columns = [
+const deleteUser = async (userId, callback) => {
+  await UserRepository.deleteUser(userId)
+    .then(() => {
+      successNotification("User deleted successfully", `User with id ${userId} deleted`);
+      callback();
+    })
+    .catch(({ response }) => console.log(response));
+};
+
+const renderActions = (user, fetchUsers) => {
+  return (
+    <Radio.Group size="middle">
+      <Popconfirm
+        title={`Are you sure to delete ${user.name}?`}
+        onConfirm={() => deleteUser(user.id, fetchUsers)}
+        okText="Yes"
+        cancelText="No"
+      >
+        <Radio.Button>Delete</Radio.Button>
+      </Popconfirm>
+      <Radio.Button>Edit</Radio.Button>
+    </Radio.Group>
+  );
+};
+
+const columns = (fetchUsers) => [
   {
     title: "",
     dataIndex: "avatar",
@@ -35,14 +62,20 @@ const columns = [
     dataIndex: "gender",
     key: "gender",
   },
+  {
+    title: "Actions",
+    dataIndex: "actions",
+    key: "actions",
+    render: (text, user) => renderActions(user, fetchUsers),
+  },
 ];
 
-const TableUser = ({ buttonUserOnClick }) => {
+const TableUser = ({ buttonUserOnClick, fetchUsers }) => {
   const users = useContext(UserContext);
   return (
     <Table
       dataSource={users}
-      columns={columns}
+      columns={columns(fetchUsers)}
       bordered
       title={() => (
         <>
@@ -61,6 +94,7 @@ const TableUser = ({ buttonUserOnClick }) => {
 
 TableUser.propTypes = {
   buttonUserOnClick: PropTypes.func.isRequired,
+  fetchUsers: PropTypes.func.isRequired,
 };
 
 export default TableUser;

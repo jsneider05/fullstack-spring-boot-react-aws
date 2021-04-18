@@ -32,7 +32,7 @@ const App = () => {
     return (
       <>
         <UserDraweForm showDrawer={showDrawer} setShowDrawer={setShowDrawer} fetchUsers={fetchUsers} />
-        <TableUser buttonUserOnClick={() => setShowDrawer(!showDrawer)} />
+        <TableUser buttonUserOnClick={() => setShowDrawer(!showDrawer)} fetchUsers={fetchUsers} />
       </>
     );
   };
