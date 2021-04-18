@@ -1,11 +1,20 @@
 import { useContext } from "react";
 import PropTypes from "prop-types";
 import { Badge, Table, Tag } from "antd";
-import ButtonUser from "./ButtonUser.js";
+import ButtonUser from "./ButtonUser";
+import AvatarUser from "./AvatarUser";
 import UserContext from "../hooks/userContext";
 import "./TableUser.css";
 
+const renderAvatar = (text, user) => <AvatarUser name={user.name} />;
+
 const columns = [
+  {
+    title: "",
+    dataIndex: "avatar",
+    key: "avatar",
+    render: renderAvatar,
+  },
   {
     title: "Id",
     dataIndex: "id",
