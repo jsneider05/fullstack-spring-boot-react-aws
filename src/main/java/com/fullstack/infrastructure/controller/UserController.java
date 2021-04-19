@@ -6,6 +6,7 @@ import com.fullstack.application.QueryUserHandler;
 import com.fullstack.domain.model.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
+@ControllerAdvice
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
