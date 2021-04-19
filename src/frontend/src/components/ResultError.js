@@ -7,8 +7,8 @@ const ResultError = (props) => {
 };
 
 ResultError.propTypes = {
-  status: PropTypes.number.isRequired,
-  title: PropTypes.number.isRequired,
+  status: PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf(["success", "error", "info", "warning"])]).isRequired,
+  title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired,
 };
 

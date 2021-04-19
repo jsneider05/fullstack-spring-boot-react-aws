@@ -14,17 +14,19 @@ const { SubMenu } = Menu;
 
 const App = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const { users, loading, error, fetchUsers } = useFetchUsers();
+  const [users, loading, isError, error, fetchUsers] = useFetchUsers();
   const [showDrawer, setShowDrawer] = useState(false);
 
-  const [statusError, statusTextError] = error;
-
   const renderUsers = () => {
-    if (statusError) {
-      return <ResultError status={statusError} title={statusError} subTitle={statusTextError} />;
-    }
     if (loading) {
       return <SpinLoading />;
+    }
+    if (isError) {
+      const { statusCode, message } = error;
+      const [messageSubtitle] = message;
+      return (
+        <ResultError status={"error"} title="There was an issue." subTitle={`[${statusCode}] ${messageSubtitle}`} />
+      );
     }
     if (users.length <= 0) {
       return <Empty />;
