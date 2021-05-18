@@ -20,8 +20,10 @@ const UserDrawerForm = (props) => {
         fetchUsers();
       })
       .catch(({ response }) => {
-        const messageObj = { statusError: response.status, statusTextError: response.statusText };
-        alert(JSON.stringify(messageObj, null, 2));
+        const messages = response.data.message;
+        messages.forEach((msg) => {
+          errorNotification("There was an issue", `${msg}`);
+        });
       })
       .finally(() => {
         setSubmitting(false);

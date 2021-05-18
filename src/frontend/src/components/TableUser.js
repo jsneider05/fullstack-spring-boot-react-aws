@@ -5,7 +5,7 @@ import ButtonUser from "./ButtonUser";
 import AvatarUser from "./AvatarUser";
 import UserContext from "../hooks/userContext";
 import UserRepository from "../services/user.repository";
-import { successNotification } from "./Notification";
+import { successNotification, errorNotification } from "./Notification";
 import "./TableUser.css";
 
 const renderAvatar = (text, user) => <AvatarUser name={user.name} />;
@@ -16,7 +16,12 @@ const deleteUser = async (userId, callback) => {
       successNotification("User deleted successfully", `User with id ${userId} deleted`);
       callback();
     })
-    .catch(({ response }) => console.log(response));
+    .catch(({ response }) => {
+      const messages = response.data.message;
+      messages.forEach((msg) => {
+        errorNotification("There was an issue", `${msg}`);
+      });
+    });
 };
 
 const renderActions = (user, fetchUsers) => {
