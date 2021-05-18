@@ -20,7 +20,6 @@ const UserDrawerForm = (props) => {
         fetchUsers();
       })
       .catch(({ response }) => {
-        console.log(response);
         const messages = response.data.message;
         messages.forEach((msg) => {
           errorNotification("There was an issue", `${msg}`);

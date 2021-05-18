@@ -22,7 +22,7 @@ const App = () => {
       return <SpinLoading />;
     }
     if (isError) {
-      const { statusCode, message } = error;
+      const { statusCode = "500", message = ["Please contact the administrator"] } = error;
       const [messageSubtitle] = message;
       return (
         <ResultError status={"error"} title="There was an issue." subTitle={`[${statusCode}] ${messageSubtitle}`} />
