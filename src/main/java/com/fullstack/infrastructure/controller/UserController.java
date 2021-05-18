@@ -7,6 +7,7 @@ import com.fullstack.application.DeleteUserHandler;
 import com.fullstack.application.QueryUserHandler;
 import com.fullstack.domain.model.User;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +36,7 @@ public class UserController {
 
   @ResponseStatus(CREATED)
   @PostMapping
-  public User addUser(@RequestBody User user) {
+  public User addUser(@Valid @RequestBody User user) {
     return this.createUserHandler.execute(user);
   }
 
