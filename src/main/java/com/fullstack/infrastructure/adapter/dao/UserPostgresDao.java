@@ -27,4 +27,9 @@ public class UserPostgresDao implements UserDao {
     return this.repository.existsById(id);
   }
 
+  @Override
+  public Boolean existsByEmail(String email) {
+    return this.repository.existsByEmail(email);
+  }
+
 }

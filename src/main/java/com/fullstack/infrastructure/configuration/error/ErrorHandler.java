@@ -43,10 +43,10 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     STATE_CODES.put(InternalProcessException.class.getSimpleName(), HttpStatus.BAD_REQUEST.value());
     STATE_CODES
         .put(ConstraintViolationException.class.getSimpleName(), HttpStatus.BAD_REQUEST.value());
+    STATE_CODES.put(IllegalArgumentException.class.getSimpleName(), HttpStatus.BAD_REQUEST.value());
   }
 
-  // TODO: Change for throwable
-  @ExceptionHandler(Exception.class)
+  @ExceptionHandler(Throwable.class)
   private ResponseEntity<Error> handleAllExceptions(Throwable exception) {
 
     String exceptionName = exception.getClass().getSimpleName();

@@ -9,4 +9,6 @@ public interface UserDao {
 
   Boolean existsById(Long id);
 
+  Boolean existsByEmail(String email);
+
 }

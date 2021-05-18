@@ -34,6 +34,63 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Add User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonReponse = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"user-id\", jsonReponse.id);\r",
+							"postman.setEnvironmentVariable(\"user-name\", jsonReponse.name);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Amigoscode\",\r\n  \"gender\": \"MALE\",\r\n  \"email\": \"abcd121@amigoscode.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}{{api-version}}/user",
+					"host": [
+						"{{host}}{{api-version}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}{{api-version}}/user/{{user-id}}",
+					"host": [
+						"{{host}}{{api-version}}"
+					],
+					"path": [
+						"user",
+						"{{user-id}}"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

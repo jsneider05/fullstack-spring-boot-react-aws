@@ -4,7 +4,7 @@ import com.fullstack.domain.model.User;
 
 public interface UserRepository {
 
-  void save(User user);
+  User save(User user);
 
   void delete(Long id);
 

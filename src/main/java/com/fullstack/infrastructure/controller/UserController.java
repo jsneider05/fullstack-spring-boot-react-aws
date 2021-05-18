@@ -1,5 +1,7 @@
 package com.fullstack.infrastructure.controller;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 import com.fullstack.application.CreateUserHandler;
 import com.fullstack.application.DeleteUserHandler;
 import com.fullstack.application.QueryUserHandler;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -30,9 +33,10 @@ public class UserController {
     return this.queryUserHandler.getAllUsers();
   }
 
+  @ResponseStatus(CREATED)
   @PostMapping
-  public void addUser(@RequestBody User user) {
-    this.createUserHandler.execute(user);
+  public User addUser(@RequestBody User user) {
+    return this.createUserHandler.execute(user);
   }
 
   @DeleteMapping(path = "/{id}")

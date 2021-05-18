@@ -11,8 +11,8 @@ public class CreateUserHandler {
 
   private final CreateUserService service;
 
-  public void execute(User user) {
-    this.service.addUser(user);
+  public User execute(User user) {
+    return this.service.addUser(user);
   }
 
 }

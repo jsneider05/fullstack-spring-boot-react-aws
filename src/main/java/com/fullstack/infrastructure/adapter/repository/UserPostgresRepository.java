@@ -15,9 +15,11 @@ public class UserPostgresRepository implements UserRepository {
   private final UserMapper mapper;
 
   @Override
-  public void save(User user) {
-    this.repository.save(
-        this.mapper.toUserEntity.apply(user)
+  public User save(User user) {
+    return this.mapper.toUser.apply(
+        this.repository.save(
+            this.mapper.toUserEntity.apply(user)
+        )
     );
   }
 

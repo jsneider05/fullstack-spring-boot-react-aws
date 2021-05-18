@@ -9,12 +9,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_fullstack_user")
@@ -36,11 +40,5 @@ public class UserEntity {
 
   @Enumerated(EnumType.STRING)
   private Gender gender;
-
-  public UserEntity(String name, String email, Gender gender) {
-    this.name = name;
-    this.email = email;
-    this.gender = gender;
-  }
 
 }
