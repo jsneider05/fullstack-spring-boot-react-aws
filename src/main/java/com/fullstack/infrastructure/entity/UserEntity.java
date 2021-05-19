@@ -1,6 +1,7 @@
 package com.fullstack.infrastructure.entity;
 
 import com.fullstack.domain.model.Gender;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "UserEntity")
 @Table(name = "tbl_fullstack_user")
 public class UserEntity {
 
@@ -34,11 +35,14 @@ public class UserEntity {
       generator = "user_sequence")
   private Long id;
 
+  @Column(nullable = false)
   private String name;
 
+  @Column(nullable = false, unique = true)
   private String email;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private Gender gender;
 
 }
