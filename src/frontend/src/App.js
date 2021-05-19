@@ -6,6 +6,7 @@ import SpinLoading from "./components/SpinLoading.js";
 import TableUser from "./components/TableUser.js";
 import UserDraweForm from "./components/UserDraweForm.js";
 import ResultError from "./components/ResultError";
+import ButtonUser from "./components/ButtonUser";
 import useFetchUsers from "./hooks/useFetchUsers.js";
 import { UserProvider } from "./hooks/userContext";
 
@@ -29,7 +30,13 @@ const App = () => {
       );
     }
     if (users.length <= 0) {
-      return <Empty />;
+      return (
+        <>
+          <ButtonUser onClick={() => setShowDrawer(!showDrawer)} />
+          <UserDraweForm showDrawer={showDrawer} setShowDrawer={setShowDrawer} fetchUsers={fetchUsers} />
+          <Empty />;
+        </>
+      );
     }
     return (
       <>
