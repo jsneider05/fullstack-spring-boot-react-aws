@@ -97,7 +97,6 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         HttpStatus.valueOf(error.getStatusCode()), request);
   }
 
-  // TODO: Validate ResponseBody
   @ExceptionHandler(ConstraintViolationException.class)
   @ResponseBody
   @ResponseStatus(HttpStatus.BAD_REQUEST)
