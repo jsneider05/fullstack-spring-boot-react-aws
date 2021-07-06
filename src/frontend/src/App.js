@@ -34,7 +34,7 @@ const App = () => {
         <>
           <ButtonUser onClick={() => setShowDrawer(!showDrawer)} />
           <UserDraweForm showDrawer={showDrawer} setShowDrawer={setShowDrawer} fetchUsers={fetchUsers} />
-          <Empty />;
+          <Empty />
         </>
       );
     }

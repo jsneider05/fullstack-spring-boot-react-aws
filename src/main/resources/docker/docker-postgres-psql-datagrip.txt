@@ -39,6 +39,9 @@ Reference: https://docs.docker.com/engine/reference/commandline/run/
 
 docker run -it --rm --network=db postgres:alpine psql -h db -U postgres
 
+Connect to RDS:
+docker run -it --rm postgres:alpine psql -h ${AWS_RDS_URL} -U ${AWS_RDS_USERNAME} -d postgres
+
 Create database:
 create database fullstack;
 
