@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${AWS_RDS_URL:localhost:5434}/fullstack
+    url: ${AWS_RDS_URL:jdbc:postgresql://localhost:5434/fullstack}
     username: ${AWS_RDS_USERNAME:postgres}
     password: ${AWS_RDS_PASSWORD:password}
   jpa:
