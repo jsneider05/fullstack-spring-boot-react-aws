@@ -2,7 +2,7 @@ name: CI # Give a name
 
 on:
   pull_request:
-    branches: [ main ] # On pull request against main branch, we want to run this only in this case
+    branches: [ master ] # On pull request against master branch, we want to run this only in this case
 
   workflow_dispatch: # Allow execute this workflow manually
 
