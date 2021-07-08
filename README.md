@@ -31,6 +31,14 @@ All the project was made using:
 git clone https://github.com/jsneider05/fullstack-spring-boot-react-aws.git
 ```
 
+2) In the development IDE, create the configuration to run the SpringBoot project and create the environment variables:
+
+```properties
+AWS_RDS_URL=aws_rds_url
+AWS_RDS_USERNAME=aws_rds_username
+AWS_RDS_PASSWORD=aws_rds_password
+```
+
 ## Run the project
 
 1) Clean and install dependencies
