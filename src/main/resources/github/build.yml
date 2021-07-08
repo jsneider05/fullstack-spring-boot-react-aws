@@ -1,0 +1,36 @@
+name: CI # Give a name
+
+on:
+  pull_request:
+    branches: [ main ] # On pull request against main branch, we want to run this only in this case
+
+  workflow_dispatch: # Allow execute this workflow manually
+
+env: # Set up some environment variables
+  POSTGRESQL_VERSION: 13.1
+  POSTGRESQL_DB: fullstack
+  POSTGRESQL_USER: postgres
+  POSTGRESQL_PASSWORD: password
+  JAVA_VERSION: 1.15
+
+jobs: # Define a series of jobs
+  build: # Contains a sequence of steps
+    runs-on: ubuntu-latest
+    services: # Services are use for scenarios when we want to connect to databases
+      postgres: # Give a name
+        image: postgres:13.1 # The image that we want
+        env:
+          POSTGRES_DB: ${{ env.POSTGRESQL_DB }}
+          POSTGRES_USER: ${{ env.POSTGRESQL_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRESQL_PASSWORD }}
+        ports: # Define the ports
+          - 5434:5432 # host:container
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 # Options for check whether the database health is up running
+    steps:
+      - uses: actions/checkout@v2 # Checkout the code
+      - uses: actions/setup-java@v1.4.3 # User java
+        with:
+          java-version: ${{ env.JAVA_VERSION }} # Define java version
+      - name: Maven Clean Package # Define the name, --no-transfer-progress: for remove all the noise when download all the artifacts
+        run: |
+          ./mvnw --no-transfer-progress clean package -P build-frontend
