@@ -83,7 +83,7 @@ const App = () => {
               {renderUsers()}
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>By JoanS ©2021</Footer>
+          <Footer style={{ textAlign: "center" }}>By JoanSneider ©2021</Footer>
         </Layout>
       </Layout>
     </UserProvider>
