@@ -9,3 +9,4 @@ services:
       - AWS_RDS_URL=jdbc:postgresql://aa1ge9yf5d8uh6r.cclapyjkzgak.us-east-2.rds.amazonaws.com:5432/fullstack
       - AWS_RDS_USERNAME=jsneider05
       - AWS_RDS_PASSWORD=wordpass
+      - FULLSTACK_ACTIVE_PROFILE=dev

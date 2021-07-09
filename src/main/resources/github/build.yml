@@ -28,7 +28,7 @@ jobs: # Define a series of jobs
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5 # Options for check whether the database health is up running
     steps:
       - uses: actions/checkout@v2 # Checkout the code
-      - uses: actions/setup-java@v1.4.3 # User java
+      - uses: actions/setup-java@v1.4.3 # Setup java
         with:
           java-version: ${{ env.JAVA_VERSION }} # Define java version
       - name: Maven Clean Package # Define the name, --no-transfer-progress: for remove all the noise when download all the artifacts

@@ -1,0 +1,125 @@
+name: CICD # Give a name
+
+on:
+  push:
+    branches: [ master ] # On push against master branch, we want to run this only in this case
+
+  workflow_dispatch: # Allow execute this workflow manually using the UI
+
+env: # Set up some environment variables
+  # Postgres
+  POSTGRESQL_VERSION: 13.1
+  POSTGRESQL_DB: fullstack
+  POSTGRESQL_USER: postgres
+  POSTGRESQL_PASSWORD: password
+  # Java
+  JAVA_VERSION: 1.15
+  # DockerHub
+  DOCKER_HUB_USERNAME: jsneider05
+  # AWS & Elastic Bean Stalk
+  AWS_REGION: us-east-2
+  EB_ENVIRONMENT_NAME: Springbootreactfullstack-env
+  EB_APPLICATION_NAME: springboot-react-fullstack
+  EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    services: # Services are use for scenarios when we want to connect to databases
+      postgres: # Give a name
+        image: postgres:13.1 # The image that we want
+        env:
+          POSTGRES_DB: ${{ env.POSTGRESQL_DB }}
+          POSTGRES_USER: ${{ env.POSTGRESQL_USER }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRESQL_PASSWORD }}
+        ports:
+          - 5434:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: 8398a7/action-slack@v3 # Action for send slack notifications
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          text: 'CICD ongoing... :eyes:'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - uses: actions/checkout@v2 # Checkout the code
+
+      - name: Setup Java JDK # Setup java
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: ${{ env.JAVA_VERSION }} # Define java version
+
+      - name: Build Number # Build the version number
+        id: build-number
+        run: echo "::set-output name=BUILD_NUMBER::$(date '+%-d.%-m.%Y.%-H.%-M.%-S')" # Set an output, define the name
+
+      - name: Docker Login # Setup docker login
+        uses: docker/login-action@f3364599c6aa293cdc2b8391b1b56d0c30e45c8a
+        with:
+          username: ${{ env.DOCKER_HUB_USERNAME }} # Define the dockerhub user name
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }} # Define the dockerhub password
+
+      - name: Maven Clean Package and Push to Dockerhub # --no-transfer-progress: for remove all the noise when download all the artifacts
+        run: |
+          ./mvnw --no-transfer-progress clean package \
+            -P build-frontend \
+            -P jib-push-to-dockerhub \
+              -Dapp.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}}
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          text: ':white_check_mark: pushed jsneider05/fullstack-spring-boot-react-aws:${{steps.build-number.outputs.BUILD_NUMBER}} to docker hub... https://hub.docker.com/repository/docker/jsneider05/springboot-react-fullstack'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Update and commit app version in docker-compose.yaml
+          # Grab the build number
+          # Echo the docker-compose.yml
+          # Perform a search and replacement, perform a regular expression grouping by (jsneider05/springboot-react-fullstack:)
+            # and then by double quotes ([^"]*), and replacing the first group follow by the build number
+            # and then passing the file that we should be performing the replacement on
+          # Echo the result after sed had run
+          # Set the git config username and email
+          # Git add the file
+          # Commit the new app version and pass the build number
+          # And git push
+        run: |
+          BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
+          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          sed -i -E 's_(jsneider05/springboot-react-fullstack:)([^"]*)_\1'${BUILD_NUMBER}'_' elasticbeanstalk/docker-compose.yml
+          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add elasticbeanstalk/docker-compose.yml
+          git commit -m "new app version: ${BUILD_NUMBER}"
+          git push
+
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          text: ':elasticbeanstalk: :aws: Deployment started... :grimacing: :crossed_fingers:'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Beanstalk Deploy
+        uses: einaregilsson/beanstalk-deploy@ebe3476a4ce991d54336935e75e78dd9d86f9408 # Use an action for beanstalk deploy
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: ${{ env.AWS_REGION }}
+          environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
+          application_name: ${{ env.EB_APPLICATION_NAME }}
+          deployment_package: ${{ env.EB_DEPLOYMENT_PACKAGE }}
+          version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
+          version_description: Version ${{steps.build-number.outputs.BUILD_NUMBER}} deployed via github actions ${{ github.sha }}
+          wait_for_deployment: 60
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+          text: ':tada: :arrow_right: http://springbootreactfullstack-env.eba-cvqbmry5.us-east-2.elasticbeanstalk.com'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always() # If the build fail, this will always trigger

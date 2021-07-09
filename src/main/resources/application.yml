@@ -2,7 +2,7 @@ spring:
   application:
     name: spring-book-react-aws
   profiles:
-    active: dev
+    active: ${FULLSTACK_ACTIVE_PROFILE:dev}
 
 server:
   port: 8080
