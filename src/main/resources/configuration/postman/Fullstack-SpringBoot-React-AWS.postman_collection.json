@@ -13,8 +13,8 @@
 					"script": {
 						"exec": [
 							"var jsonReponse = JSON.parse(responseBody);\r",
-							"postman.setEnvironmentVariable(\"user-profile-id\", jsonReponse[0].userProfileId);\r",
-							"postman.setEnvironmentVariable(\"user-name\", jsonReponse[0].userName);"
+							"postman.setEnvironmentVariable(\"user-id\", jsonReponse[0].id);\r",
+							"postman.setEnvironmentVariable(\"user-name\", jsonReponse[0].name);"
 						],
 						"type": "text/javascript"
 					}
@@ -55,7 +55,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"name\": \"Amigoscode\",\r\n  \"gender\": \"MALE\",\r\n  \"email\": \"abcd121@amigoscode.com\"\r\n}",
+					"raw": "{\r\n  \"name\": \"Joan\",\r\n  \"gender\": \"MALE\",\r\n  \"email\": \"joan@gmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
