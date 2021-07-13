@@ -1,6 +1,5 @@
 package com.fullstack.domain.service;
 
-import com.fullstack.domain.exception.InvalidValueException;
 import com.fullstack.domain.model.User;
 import com.fullstack.domain.port.dao.UserDao;
 import com.fullstack.domain.port.repository.UserRepository;
@@ -21,9 +20,7 @@ public class CreateUserService {
 
     UserValidator.isEmailUsed(this.userDao.existsByEmail(user.getEmail()))
         .validate(user)
-        .throwIfInvalid(() -> new InvalidValueException(
-            String.format(EMAIL_ALREADY_EXISTS, user.getEmail())
-        ));
+        .throwIfInvalid(EMAIL_ALREADY_EXISTS, user.getEmail());
 
     return this.userRepository.save(user);
   }

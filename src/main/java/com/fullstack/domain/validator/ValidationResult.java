@@ -36,6 +36,12 @@ public class ValidationResult {
     }
   }
 
+  public void throwIfInvalid(String message, Object... parameters) {
+    if (!isValid()) {
+      throw new IllegalArgumentException(String.format(message, parameters));
+    }
+  }
+
   public <X extends Throwable> void throwIfInvalid(Supplier<? extends X> exceptionSupplier)
       throws X {
     if (!isValid()) {
