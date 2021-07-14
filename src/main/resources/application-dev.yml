@@ -1,6 +1,7 @@
 spring:
   datasource:
     url: ${AWS_RDS_URL:jdbc:postgresql://localhost:5434/fullstack}
+    driver-class-name: org.postgresql.Driver
     username: ${AWS_RDS_USERNAME:postgres}
     password: ${AWS_RDS_PASSWORD:password}
   jpa:
